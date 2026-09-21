@@ -1,0 +1,43 @@
+package migrations
+
+import (
+	"log"
+
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/domain/entities"
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/infrastructure/database"
+	"gorm.io/gorm"
+)
+
+type {{EntityNameUpper}}Migration interface {
+	Migrate{{EntityNameUpper}}()
+	Seed{{EntityNameUpper}}()
+}
+
+type {{EntityNameLower}}Migration struct {
+	db *gorm.DB
+}
+
+func New{{EntityNameUpper}}Migration() {{EntityNameUpper}}Migration {
+	return &{{EntityNameLower}}Migration{
+		db: database.GetDB(),
+	}
+}
+
+func (c *{{EntityNameLower}}Migration) Migrate{{EntityNameUpper}}() {
+	c.db.Migrator().DropTable(&entities.{{EntityNameUpper}}{})
+	c.db.AutoMigrate(&entities.{{EntityNameUpper}}{})
+}
+
+func (c *{{EntityNameLower}}Migration) Seed{{EntityNameUpper}}() {
+	seeds := []entities.{{EntityNameUpper}}{
+		{Id: 1},
+	}
+
+	for _, element := range seeds {
+		result := c.db.Create(element)
+
+		if result.Error != nil {
+			log.Fatalf("Error Seeder: %s", result.Error)
+		}
+	}
+}

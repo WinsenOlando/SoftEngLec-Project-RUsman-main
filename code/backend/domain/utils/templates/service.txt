@@ -1,0 +1,75 @@
+package services
+
+import (
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/domain/entities"
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/infrastructure/database/repositories"
+)
+
+type {{EntityNameUpper}}Service interface {
+	CreateNew{{EntityNameUpper}}({{EntityNameUpper}} entities.{{EntityNameUpper}}) error
+	Get{{EntityNameUpper}}ByID(id int) (entities.{{EntityNameUpper}}, error)
+	GetAll{{EntityNameUpper}}s() ([]entities.{{EntityNameUpper}}, error)
+	Update{{EntityNameUpper}}({{EntityNameUpper}} entities.{{EntityNameUpper}}) error
+	Delete{{EntityNameUpper}}(id int) error
+}
+
+type {{EntityNameLower}}Service struct {
+	repo repositories.{{EntityNameUpper}}Repository
+}
+
+func New{{EntityNameUpper}}Service() {{EntityNameUpper}}Service {
+	return &{{EntityNameLower}}Service{
+		repo: repositories.New{{EntityNameUpper}}Repository(),
+	}
+}
+
+func (s *{{EntityNameLower}}Service) CreateNew{{EntityNameUpper}}({{EntityNameUpper}} entities.{{EntityNameUpper}}) error {
+	err := s.repo.CreateNew{{EntityNameUpper}}({{EntityNameUpper}});
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *{{EntityNameLower}}Service) Get{{EntityNameUpper}}ByID(id int) (entities.{{EntityNameUpper}}, error) {
+	{{EntityNameLower}}, err := s.repo.Find{{EntityNameUpper}}(id)
+	if err != nil {
+		return entities.{{EntityNameLower}}{}, err
+	}
+
+	return {{EntityNameLower}}, nil
+}
+
+func (s *{{EntityNameLower}}Service) GetAll{{EntityNameUpper}}s() ([]entities.{{EntityNameUpper}}, error) {
+	{{EntityNameLower}}s, err := s.repo.GetAll{{EntityNameLower}}s()
+	if err != nil {
+		return nil, err
+	}
+
+	return {{EntityNameLower}}s, nil
+}
+
+func (s *{{EntityNameLower}}Service) Update{{EntityNameUpper}}({{EntityNameUpper}} entities.{{EntityNameUpper}}) error {
+	err := s.repo.Update{{EntityNameUpper}}({{EntityNameLower}})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *{{EntityNameLower}}Service) Delete{{EntityNameUpper}}(id int) error {
+	err := s.repo.Delete{{EntityNameUpper}}(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func Validate{{EntityNameUpper}}({{EntityNameUpper}} entities.{{EntityNameUpper}}) bool {
+	// Fill this part with attributes and its validations
+    
+    return true
+}

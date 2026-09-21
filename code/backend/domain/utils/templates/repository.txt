@@ -1,0 +1,49 @@
+package repositories
+
+import (
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/domain/entities"
+	"github.com/WillyWinata/WebDevelopment-Personal/backend/infrastructure/database"
+	"gorm.io/gorm"
+)
+
+type {{EntityNameUpper}}Repository interface {
+	CreateNew{{EntityNameUpper}}(model entities.{{EntityNameUpper}}) error
+	Find{{EntityNameUpper}}(id int) (entities.{{EntityNameUpper}}, error)
+	GetAll{{EntityNameUpper}}s() ([]entities.{{EntityNameUpper}}, error)
+	Update{{EntityNameUpper}}(model entities.{{EntityNameUpper}}) error
+	Delete{{EntityNameUpper}}(id int) error
+}
+
+type {{EntityNameLower}}Repository struct {
+	db *gorm.DB
+}
+
+func New{{EntityNameUpper}}Repository() {{EntityNameUpper}}Repository {
+	return &{{EntityNameLower}}Repository{db: database.GetDB()}
+}
+
+func (r *{{EntityNameLower}}Repository) CreateNew{{EntityNameUpper}}(model entities.{{EntityNameUpper}}) error {
+	return r.db.Create(&model).Error
+}
+
+func (r *{{EntityNameLower}}Repository) Find{{EntityNameUpper}}(id int) (entities.{{EntityNameUpper}}, error) {
+	var entity entities.{{EntityNameUpper}}
+
+	err := r.db.First(&entity, id).Error
+	return entity, err
+}
+
+func (r *{{EntityNameLower}}Repository) GetAll{{EntityNameUpper}}s() ([]entities.{{EntityNameUpper}}, error) {
+	var entities []entities.{{EntityNameUpper}}
+
+	err := r.db.Find(&entities).Error
+	return entities, err
+}
+
+func (r *{{EntityNameLower}}Repository) Update{{EntityNameUpper}}(model entities.{{EntityNameUpper}}) error {
+	return r.db.Save(&model).Error
+}
+
+func (r *{{EntityNameLower}}Repository) Delete{{EntityNameUpper}}(id int) error {
+	return r.db.Delete(&entities.{{EntityNameUpper}}{}, id).Error
+}

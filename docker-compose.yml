@@ -1,0 +1,55 @@
+services:
+  backend:
+    build:
+      context: ./code/backend
+      dockerfile: ./Dockerfile
+    ports:
+      - 8888:8888
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=rusman
+    depends_on:
+      - db
+    networks:
+      - rusman_network
+    restart: unless-stopped
+
+  db:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=rusman
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - rusman_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./code/frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_BACKEND_URL=http://backend:8888
+    depends_on:
+      - backend
+    networks:
+      - rusman_network
+    restart: unless-stopped
+    volumes:
+      - ./code/frontend:/app
+      - /app/node_modules
+
+networks:
+  rusman_network:
+    driver: bridge
+
+volumes:
+  db_data:

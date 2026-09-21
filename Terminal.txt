@@ -1,0 +1,1 @@
+docker exec -it softenglec-project-rusman-main-db-1 mysql -u root -p
