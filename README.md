@@ -1,2 +1,0 @@
-# SoftEngLec-Project-RUsman 
-# ok
